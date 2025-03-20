@@ -1,28 +1,22 @@
-/**
- * This class is part of the Programming the Internet of Things project.
- * 
- * It is provided as a simple shell to guide the student and assist with
- * implementation for the Programming the Internet of Things exercises,
- * and designed to be modified by the student as needed.
- */ 
-
 package programmingtheiot.gda.system;
 
 import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 
 import programmingtheiot.common.ConfigConst;
 
-
 /**
- * Shell representation of class for student implementation.
+ * Clase para obtener la utilización de la CPU en el sistema.
  * 
+ * Esta clase extiende de BaseSystemUtilTask y sobrescribe el método getTelemetryValue
+ * para obtener la utilización de la CPU promediada.
  */
 public class SystemCpuUtilTask extends BaseSystemUtilTask
 {
-	// constructors
+	// constructores
 	
 	/**
-	 * Default.
+	 * Constructor por defecto.
 	 * 
 	 */
 	public SystemCpuUtilTask()
@@ -31,12 +25,19 @@ public class SystemCpuUtilTask extends BaseSystemUtilTask
 	}
 	
 	
-	// public methods
+	// métodos públicos
 	
 	@Override
 	public float getTelemetryValue()
 	{
-		return 0.0f;
+		// Obtener el bean del sistema operativo para acceder a la información sobre la carga del sistema
+		OperatingSystemMXBean mxBean = ManagementFactory.getOperatingSystemMXBean();
+		
+		// Obtener la carga promedio del sistema (promediado entre todos los núcleos)
+		double cpuUtil = mxBean.getSystemLoadAverage();
+		
+		// Devolver el valor como float
+		return (float) cpuUtil;
 	}
 	
 }
