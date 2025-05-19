@@ -8,7 +8,6 @@
 
 package programmingtheiot.gda.app;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import programmingtheiot.common.ConfigConst;
@@ -16,56 +15,38 @@ import programmingtheiot.common.ConfigUtil;
 import programmingtheiot.common.IActuatorDataListener;
 import programmingtheiot.common.IDataMessageListener;
 import programmingtheiot.common.ResourceNameEnum;
-
 import programmingtheiot.data.ActuatorData;
-import programmingtheiot.data.DataUtil;
-import programmingtheiot.data.SensorData;
 import programmingtheiot.data.SystemPerformanceData;
-
-import programmingtheiot.gda.connection.CloudClientConnector;
 import programmingtheiot.gda.connection.CoapServerGateway;
 import programmingtheiot.gda.connection.IPersistenceClient;
 import programmingtheiot.gda.connection.IPubSubClient;
 import programmingtheiot.gda.connection.IRequestResponseClient;
 import programmingtheiot.gda.connection.MqttClientConnector;
-import programmingtheiot.gda.connection.RedisPersistenceAdapter;
-import programmingtheiot.gda.connection.SmtpClientConnector;
 
-/**
- * Shell representation of class for student implementation.
- *
- */
 public class DeviceDataManager implements IDataMessageListener
 {
-	// static
-	
 	private static final Logger _Logger =
 		Logger.getLogger(DeviceDataManager.class.getName());
-	
-	// private var's
-	
-	private boolean enableMqttClient = true;
+
+	private boolean enableMqttClient = false;
 	private boolean enableCoapServer = false;
 	private boolean enableCloudClient = false;
 	private boolean enableSmtpClient = false;
 	private boolean enablePersistenceClient = false;
-	
+
 	private IActuatorDataListener actuatorDataListener = null;
-	private IPubSubClient mqttClient = null;
+	private MqttClientConnector mqttClient = null;
 	private IPubSubClient cloudClient = null;
 	private IPersistenceClient persistenceClient = null;
 	private IRequestResponseClient smtpClient = null;
 	private CoapServerGateway coapServer = null;
-	
-	// constructors
-	
+
 	public DeviceDataManager()
 	{
 		super();
-		
 		initConnections();
 	}
-	
+
 	public DeviceDataManager(
 		boolean enableMqttClient,
 		boolean enableCoapClient,
@@ -74,13 +55,16 @@ public class DeviceDataManager implements IDataMessageListener
 		boolean enablePersistenceClient)
 	{
 		super();
-		
+
+		this.enableMqttClient = enableMqttClient;
+		this.enableCoapServer = enableCoapClient;
+		this.enableCloudClient = enableCloudClient;
+		this.enableSmtpClient = enableSmtpClient;
+		this.enablePersistenceClient = enablePersistenceClient;
+
 		initConnections();
 	}
-	
-	
-	// public methods
-	
+
 	@Override
 	public boolean handleActuatorCommandResponse(ResourceNameEnum resourceName, ActuatorData data)
 	{
@@ -100,7 +84,7 @@ public class DeviceDataManager implements IDataMessageListener
 	}
 
 	@Override
-	public boolean handleSensorMessage(ResourceNameEnum resourceName, SensorData data)
+	public boolean handleSensorMessage(ResourceNameEnum resourceName, String msg)
 	{
 		return false;
 	}
@@ -110,29 +94,56 @@ public class DeviceDataManager implements IDataMessageListener
 	{
 		return false;
 	}
-	
+
 	public void setActuatorDataListener(String name, IActuatorDataListener listener)
 	{
-	}
-	
-	public void startManager()
-	{
-	}
-	
-	public void stopManager()
-	{
+		this.actuatorDataListener = listener;
 	}
 
-	
-	// private methods
-	
-	/**
-	 * Initializes the enabled connections. This will NOT start them, but only create the
-	 * instances that will be used in the {@link #startManager() and #stopManager()) methods.
-	 * 
-	 */
+	public void startManager()
+	{
+		if (this.mqttClient != null) {
+			if (this.mqttClient.connectClient()) {
+				_Logger.info("Cliente MQTT conectado exitosamente al broker.");
+
+				int qos = ConfigConst.DEFAULT_QOS;
+
+				this.mqttClient.subscribeToTopic(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, qos);
+				this.mqttClient.subscribeToTopic(ResourceNameEnum.CDA_ACTUATOR_RESPONSE_RESOURCE, qos);
+				this.mqttClient.subscribeToTopic(ResourceNameEnum.CDA_SENSOR_MSG_RESOURCE, qos);
+				this.mqttClient.subscribeToTopic(ResourceNameEnum.CDA_SYSTEM_PERF_MSG_RESOURCE, qos);
+			} else {
+				_Logger.severe("Fallo al conectar el cliente MQTT al broker.");
+			}
+		}
+	}
+
+	public void stopManager()
+	{
+		if (this.mqttClient != null) {
+			this.mqttClient.unsubscribeFromTopic(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE);
+			this.mqttClient.unsubscribeFromTopic(ResourceNameEnum.CDA_ACTUATOR_RESPONSE_RESOURCE);
+			this.mqttClient.unsubscribeFromTopic(ResourceNameEnum.CDA_SENSOR_MSG_RESOURCE);
+			this.mqttClient.unsubscribeFromTopic(ResourceNameEnum.CDA_SYSTEM_PERF_MSG_RESOURCE);
+
+			if (this.mqttClient.disconnectClient()) {
+				_Logger.info("Cliente MQTT desconectado exitosamente del broker.");
+			} else {
+				_Logger.severe("Fallo al desconectar el cliente MQTT del broker.");
+			}
+		}
+	}
+
 	private void initConnections()
 	{
+		ConfigUtil configUtil = ConfigUtil.getInstance();
+
+		this.enableMqttClient = configUtil.getBoolean(
+			ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_MQTT_CLIENT_KEY);
+
+		if (this.enableMqttClient) {
+			this.mqttClient = new MqttClientConnector();
+			this.mqttClient.setDataMessageListener(this);
+		}
 	}
-	
 }
