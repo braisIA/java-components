@@ -44,7 +44,7 @@ public class DeviceDataManager implements IDataMessageListener
 	private IRequestResponseClient smtpClient = null;
 	private CoapServerGateway coapServer = null;
 	private CoapClientConnector coapClient = null;
-	
+
 
 	public DeviceDataManager()
 	{
@@ -79,7 +79,8 @@ public class DeviceDataManager implements IDataMessageListener
 	@Override
 	public boolean handleActuatorCommandRequest(ResourceNameEnum resourceName, ActuatorData data)
 	{
-		return false;
+		handleIncomingDataAnalysis(resourceName, data);
+		return true;
 	}
 
 	@Override
@@ -96,7 +97,9 @@ public class DeviceDataManager implements IDataMessageListener
 
 	public void setActuatorDataListener(String name, IActuatorDataListener listener)
 	{
-		this.actuatorDataListener = listener;
+		if (listener != null) {
+			this.actuatorDataListener = listener;
+		}
 	}
 
 	public void startManager()
@@ -115,6 +118,14 @@ public class DeviceDataManager implements IDataMessageListener
 				_Logger.severe("Fallo al conectar el cliente MQTT al broker.");
 			}
 		}
+
+		if (this.enableCoapServer && this.coapServer != null) {
+			if (this.coapServer.startServer()) {
+				_Logger.info("Servidor CoAP iniciado.");
+			} else {
+				_Logger.severe("Fallo al iniciar el servidor CoAP. Verifica el archivo de registro.");
+			}
+		}
 	}
 
 	public void stopManager()
@@ -131,6 +142,14 @@ public class DeviceDataManager implements IDataMessageListener
 				_Logger.severe("Fallo al desconectar el cliente MQTT del broker.");
 			}
 		}
+
+		if (this.enableCoapServer && this.coapServer != null) {
+			if (this.coapServer.stopServer()) {
+				_Logger.info("Servidor CoAP detenido.");
+			} else {
+				_Logger.severe("Fallo al detener el servidor CoAP. Verifica el archivo de registro.");
+			}
+		}
 	}
 
 	private void initConnections()
@@ -140,23 +159,39 @@ public class DeviceDataManager implements IDataMessageListener
 		this.enableMqttClient = configUtil.getBoolean(
 			ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_MQTT_CLIENT_KEY);
 
-		this.enableCoapClient = configUtil.getBoolean(
-			ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_COAP_CLIENT_KEY);
+
+		this.enableCoapServer = configUtil.getBoolean(
+			ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_COAP_SERVER_KEY);
+
 
 		if (this.enableMqttClient) {
 			this.mqttClient = new MqttClientConnector();
 			this.mqttClient.setDataMessageListener(this);
 		}
 
-		if (this.enableCoapClient) {
-			this.coapClient = new CoapClientConnector();
-			this.coapClient.setDataMessageListener(this);
-			_Logger.info("Cliente CoAP habilitado e inicializado.");
+
+		if (this.enableCoapServer) {
+			this.coapServer = new CoapServerGateway(this);
+			_Logger.info("Servidor CoAP habilitado e inicializado.");
 		}
 	}
+
+
 	@Override
 	public boolean handleSensorMessage(ResourceNameEnum resourceName, SensorData data) {
-		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'handleSensorMessage'");
 	}
+
+	private void handleIncomingDataAnalysis(ResourceNameEnum resource, ActuatorData data)
+	{
+		_Logger.info("Analizando datos del actuador entrantes: " + data.getName());
+
+		if (data.isResponseFlagEnabled()) {
+			// TODO: manejar lógica de respuesta
+		} else {
+			if (this.actuatorDataListener != null) {
+				this.actuatorDataListener.onActuatorDataUpdate(data);
+			}
+		}
+
 }

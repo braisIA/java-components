@@ -129,5 +129,11 @@ public class DefaultDataMessageListener implements IDataMessageListener
 	{
 		// ignore
 	}
+
+
+	public void handleDataMessage(String responseText) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'handleDataMessage'");
+	}
 	
 }

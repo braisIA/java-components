@@ -77,7 +77,3 @@ public interface IDataMessageListener
 	 */
 	public void setActuatorDataListener(String name, IActuatorDataListener listener);
 
-    public void handleDataMessage(String responseText);
-
-
-}
