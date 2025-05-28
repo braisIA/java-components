@@ -44,6 +44,10 @@ public enum ResourceNameEnum
 		ConfigConst.PRODUCT_NAME, ConfigConst.GATEWAY_DEVICE, ConfigConst.UPDATE_NOTIFICATIONS_MSG, false, true),
 	GDA_MEDIA_MSG_RESOURCE(
 		ConfigConst.PRODUCT_NAME, ConfigConst.GATEWAY_DEVICE, ConfigConst.MEDIA_MSG, false, false),
+	GDA_ACTUATOR_CMD_RESOURCE(
+		ConfigConst.PRODUCT_NAME, ConfigConst.GATEWAY_DEVICE, ConfigConst.ACTUATOR_CMD, false, true),
+	GDA_SENSOR_MSG_RESOURCE(
+		ConfigConst.PRODUCT_NAME, ConfigConst.GATEWAY_DEVICE, ConfigConst.SENSOR_MSG, false, false),
 	GDA_MGMT_STATUS_MSG_RESOURCE(
 		ConfigConst.PRODUCT_NAME, ConfigConst.GATEWAY_DEVICE, ConfigConst.MGMT_STATUS_MSG, false, false),
 	GDA_MGMT_STATUS_CMD_RESOURCE(

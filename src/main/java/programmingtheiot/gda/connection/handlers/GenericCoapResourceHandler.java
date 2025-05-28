@@ -11,11 +11,8 @@ package programmingtheiot.gda.connection.handlers;
 import java.util.logging.Logger;
 
 import org.eclipse.californium.core.CoapResource;
-import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
-import programmingtheiot.common.ConfigConst;
-import programmingtheiot.common.ConfigUtil;
 import programmingtheiot.common.IDataMessageListener;
 import programmingtheiot.common.ResourceNameEnum;
 

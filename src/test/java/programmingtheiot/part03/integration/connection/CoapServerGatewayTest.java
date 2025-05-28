@@ -22,7 +22,7 @@ import programmingtheiot.common.ConfigConst;
 import programmingtheiot.common.DefaultDataMessageListener;
 import programmingtheiot.common.IDataMessageListener;
 import programmingtheiot.common.ResourceNameEnum;
-import programmingtheiot.gda.connection.*;
+import programmingtheiot.gda.connection.CoapServerGateway;
 
 /**
  * This test case class contains very basic integration tests for

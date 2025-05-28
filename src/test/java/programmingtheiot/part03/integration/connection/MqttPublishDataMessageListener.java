@@ -171,5 +171,11 @@ public class MqttPublishDataMessageListener implements IDataMessageListener
 	{
 		// ignore - nothing to do.
 	}
+
+
+	public void handleDataMessage(String responseText) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'handleDataMessage'");
+	}
 	
 }
