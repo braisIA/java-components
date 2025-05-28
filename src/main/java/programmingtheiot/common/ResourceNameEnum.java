@@ -193,5 +193,11 @@ public enum ResourceNameEnum
 	{
 		return this.isObservable;
 	}
+
+
+    public boolean handleSensorMessage(String msg)
+    {
+    	return false;
+    }
 	
 }
