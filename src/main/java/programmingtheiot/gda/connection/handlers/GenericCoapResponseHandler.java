@@ -68,19 +68,18 @@ public class GenericCoapResponseHandler implements CoapHandler
 	{
 		if (response != null) {
 			OptionSet options = response.getOptions();
-			
-			// for debugging only
-//			_Logger.finest("Processing CoAP response. Options: " + options);
-//			_Logger.finest("Processing CoAP response. MID: " + response.advanced().getMID());
-//			_Logger.finest("Processing CoAP response. Token: " + response.advanced().getTokenString());
-//			_Logger.finest("Processing CoAP response. Code: " + response.getCode());
-			
-			
-			// TODO: parse payload and notify listener
-			_Logger.info(" --> Payload: " + response.getResponseText());
-			
+
+			_Logger.info("CoAP Response received:");
+			_Logger.info("MID: " + response.advanced().getMID());
+			_Logger.info("Token: " + response.advanced().getTokenString());
+			_Logger.info("Code: " + response.getCode());
+			_Logger.info("Options: " + options);
+			_Logger.info("Payload: " + response.getResponseText());
+
+			// Example usage - notify listener if applicable
 			if (this.dataMsgListener != null) {
-				// TODO: send listener the response
+				// TODO: Optionally parse payload and send appropriate object instead of raw string
+				this.dataMsgListener.handleIncomingMessage(null, response.getResponseText());
 			}
 		} else {
 			_Logger.warning("No CoAP response to process. Response is null.");

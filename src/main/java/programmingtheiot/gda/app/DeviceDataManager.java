@@ -45,6 +45,7 @@ public class DeviceDataManager implements IDataMessageListener
 	private CoapServerGateway coapServer = null;
 	private CoapClientConnector coapClient = null;
 
+
 	public DeviceDataManager()
 	{
 		super();
@@ -158,25 +159,23 @@ public class DeviceDataManager implements IDataMessageListener
 		this.enableMqttClient = configUtil.getBoolean(
 			ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_MQTT_CLIENT_KEY);
 
+
 		this.enableCoapServer = configUtil.getBoolean(
 			ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_COAP_SERVER_KEY);
+
 
 		if (this.enableMqttClient) {
 			this.mqttClient = new MqttClientConnector();
 			this.mqttClient.setDataMessageListener(this);
 		}
 
+
 		if (this.enableCoapServer) {
 			this.coapServer = new CoapServerGateway(this);
 			_Logger.info("Servidor CoAP habilitado e inicializado.");
 		}
-
-		if (this.enableCoapClient) {
-			this.coapClient = new CoapClientConnector();
-			this.coapClient.setDataMessageListener(this);
-			_Logger.info("Cliente CoAP habilitado e inicializado.");
-		}
 	}
+
 
 	@Override
 	public boolean handleSensorMessage(ResourceNameEnum resourceName, SensorData data) {
@@ -194,5 +193,5 @@ public class DeviceDataManager implements IDataMessageListener
 				this.actuatorDataListener.onActuatorDataUpdate(data);
 			}
 		}
-	}
+
 }
