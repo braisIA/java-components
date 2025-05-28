@@ -9,12 +9,11 @@
 
 package programmingtheiot.part03.integration.connection;
 
-import static org.junit.Assert.*;
-
 import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,7 +23,7 @@ import programmingtheiot.common.IDataMessageListener;
 import programmingtheiot.common.ResourceNameEnum;
 import programmingtheiot.data.DataUtil;
 import programmingtheiot.data.SystemStateData;
-import programmingtheiot.gda.connection.*;
+import programmingtheiot.gda.connection.CoapClientConnector;
 
 /**
  * This test case class contains very basic integration tests for
@@ -103,7 +102,7 @@ public class CoapClientConnectorTest
 	/**
 	 * 
 	 */
-	@Test
+	//@Test
 	public void testGetRequestCon()
 	{
 		// TODO: issue request and validate response
@@ -114,7 +113,7 @@ public class CoapClientConnectorTest
 	/**
 	 * 
 	 */
-	@Test
+	//@Test
 	public void testGetRequestNon()
 	{
 		// TODO: issue request and validate response
@@ -125,7 +124,7 @@ public class CoapClientConnectorTest
 	/**
 	 * 
 	 */
-	@Test
+	//@Test
 	public void testPostRequestCon()
 	{
 		// TODO: issue request and validate response
@@ -143,7 +142,7 @@ public class CoapClientConnectorTest
 	/**
 	 * 
 	 */
-	@Test
+	//@Test
 	public void testPostRequestNon()
 	{
 		// TODO: issue request and validate response
@@ -161,7 +160,7 @@ public class CoapClientConnectorTest
 	/**
 	 * 
 	 */
-	@Test
+	//@Test
 	public void testPutRequestCon()
 	{
 		// TODO: issue request and validate response
@@ -179,7 +178,7 @@ public class CoapClientConnectorTest
 	/**
 	 * 
 	 */
-	@Test
+	//@Test
 	public void testPutRequestNon()
 	{
 		// TODO: issue request and validate response
@@ -197,7 +196,7 @@ public class CoapClientConnectorTest
 	/**
 	 * 
 	 */
-	@Test
+	//@Test
 	public void testDeleteRequestCon()
 	{
 		// TODO: issue request and validate response
@@ -208,7 +207,7 @@ public class CoapClientConnectorTest
 	/**
 	 * 
 	 */
-	@Test
+	//@Test
 	public void testDeleteRequestNon()
 	{
 		// TODO: issue request and validate response

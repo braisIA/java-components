@@ -16,7 +16,9 @@ import programmingtheiot.common.IActuatorDataListener;
 import programmingtheiot.common.IDataMessageListener;
 import programmingtheiot.common.ResourceNameEnum;
 import programmingtheiot.data.ActuatorData;
+import programmingtheiot.data.SensorData;
 import programmingtheiot.data.SystemPerformanceData;
+import programmingtheiot.gda.connection.CoapClientConnector;
 import programmingtheiot.gda.connection.CoapServerGateway;
 import programmingtheiot.gda.connection.IPersistenceClient;
 import programmingtheiot.gda.connection.IPubSubClient;
@@ -33,6 +35,7 @@ public class DeviceDataManager implements IDataMessageListener
 	private boolean enableCloudClient = false;
 	private boolean enableSmtpClient = false;
 	private boolean enablePersistenceClient = false;
+	private boolean enableCoapClient = false;
 
 	private IActuatorDataListener actuatorDataListener = null;
 	private MqttClientConnector mqttClient = null;
@@ -40,6 +43,8 @@ public class DeviceDataManager implements IDataMessageListener
 	private IPersistenceClient persistenceClient = null;
 	private IRequestResponseClient smtpClient = null;
 	private CoapServerGateway coapServer = null;
+	private CoapClientConnector coapClient = null;
+	
 
 	public DeviceDataManager()
 	{
@@ -79,12 +84,6 @@ public class DeviceDataManager implements IDataMessageListener
 
 	@Override
 	public boolean handleIncomingMessage(ResourceNameEnum resourceName, String msg)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean handleSensorMessage(ResourceNameEnum resourceName, String msg)
 	{
 		return false;
 	}
@@ -141,9 +140,23 @@ public class DeviceDataManager implements IDataMessageListener
 		this.enableMqttClient = configUtil.getBoolean(
 			ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_MQTT_CLIENT_KEY);
 
+		this.enableCoapClient = configUtil.getBoolean(
+			ConfigConst.GATEWAY_DEVICE, ConfigConst.ENABLE_COAP_CLIENT_KEY);
+
 		if (this.enableMqttClient) {
 			this.mqttClient = new MqttClientConnector();
 			this.mqttClient.setDataMessageListener(this);
 		}
+
+		if (this.enableCoapClient) {
+			this.coapClient = new CoapClientConnector();
+			this.coapClient.setDataMessageListener(this);
+			_Logger.info("Cliente CoAP habilitado e inicializado.");
+		}
+	}
+	@Override
+	public boolean handleSensorMessage(ResourceNameEnum resourceName, SensorData data) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'handleSensorMessage'");
 	}
 }
