@@ -100,6 +100,7 @@ public class DeviceDataManager implements IDataMessageListener
 			this.actuatorDataListener = listener;
 		}
 	}
+	
 
 	public void startManager()
 	{
@@ -195,4 +196,6 @@ public class DeviceDataManager implements IDataMessageListener
 			}
 		}
 	}
+
+
 }

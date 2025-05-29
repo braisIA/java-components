@@ -70,4 +70,9 @@ public class GetActuatorCommandResourceHandler extends CoapResource implements I
 			_Logger.warning("Intercambio CoAP nulo en handleGET(). No se puede procesar.");
 		}
 	}
+
+    @Override
+    public void handleActuatorCommand(ActuatorData data) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
