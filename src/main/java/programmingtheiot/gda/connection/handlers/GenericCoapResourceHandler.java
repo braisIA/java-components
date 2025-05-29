@@ -40,7 +40,7 @@ public class GenericCoapResourceHandler extends CoapResource
 	 */
 	public GenericCoapResourceHandler(ResourceNameEnum resource)
 	{
-		this(resource.getResourceName());
+		super(getLeafResourceName(resource));
 	}
 	
 	/**
@@ -79,5 +79,12 @@ public class GenericCoapResourceHandler extends CoapResource
 	public void setDataMessageListener(IDataMessageListener listener)
 	{
 	}
+
+	private static String getLeafResourceName(ResourceNameEnum resource)
+{
+	String[] parts = resource.getResourceName().split("/");
+	return parts[parts.length - 1];
+}
+
 	
 }
