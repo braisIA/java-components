@@ -11,9 +11,11 @@
 
 package programmingtheiot.gda.app;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import programmingtheiot.gda.connection.CoapServerGateway;
 import programmingtheiot.gda.system.SystemPerformanceManager;
 
 /**
@@ -26,13 +28,14 @@ public class GatewayDeviceApp
     private static final Logger _Logger =
         Logger.getLogger(GatewayDeviceApp.class.getName());
 
-    public static final long DEFAULT_TEST_RUNTIME = 65000L; // Cambiado de 60000L a 65000L
+    public static final long DEFAULT_TEST_RUNTIME = 7000L; // Cambiado de 60000L a 65000L
 
     // private var's
     private SystemPerformanceManager sysPerfMgr = null;
+    private CoapServerGateway coapServerGateway = null;
 
     // Flag para evitar System.exit() en modo test
-    private boolean isTestMode = true;
+    private boolean isTestMode = false;
 
     // constructors
 
@@ -71,10 +74,12 @@ public class GatewayDeviceApp
 
         gwApp.startApp();
 
+        System.out.println("GDA is running. Press ENTER to exit...");
+
         try {
-            Thread.sleep(DEFAULT_TEST_RUNTIME);
-        } catch (InterruptedException e) {
-            // ignore
+            System.in.read(); // espera a que el usuario presione ENTER
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         gwApp.stopApp(0);
@@ -91,6 +96,15 @@ public class GatewayDeviceApp
         _Logger.info("Starting GDA...");
 
         try {
+            // Inicializar y arrancar el servidor CoAP, usando el SystemPerformanceManager como listener
+            this.coapServerGateway = new CoapServerGateway(this.sysPerfMgr);
+
+            if (!this.coapServerGateway.startServer()) {
+                _Logger.warning("Failed to start CoAP server!");
+                stopApp(-1);
+                return;
+            }
+
             // Iniciar el SystemPerformanceManager
             if (this.sysPerfMgr.startManager()) {
                 _Logger.info("GDA started successfully.");
@@ -114,12 +128,13 @@ public class GatewayDeviceApp
         _Logger.info("Stopping GDA...");
 
         try {
-            // Detener el SystemPerformanceManager
-            if (this.sysPerfMgr.stopManager()) {
-                _Logger.log(Level.INFO, "GDA stopped successfully with exit code {0}.", code);
-            } else {
-                _Logger.warning("Failed to stop system performance manager!");
+            if (this.coapServerGateway != null) {
+                this.coapServerGateway.stopServer();
             }
+            if (this.sysPerfMgr != null) {
+                this.sysPerfMgr.stopManager();
+            }
+            _Logger.log(Level.INFO, "GDA stopped successfully with exit code {0}.", code);
         } catch (Exception e) {
             _Logger.log(Level.SEVERE, "Failed to cleanly stop GDA.", e);
         }

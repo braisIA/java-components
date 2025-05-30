@@ -71,6 +71,8 @@ public class ActuatorData extends BaseIotData implements Serializable
 		}
 	}
 
+	
+
 	@Override
 	public String toString()
 	{

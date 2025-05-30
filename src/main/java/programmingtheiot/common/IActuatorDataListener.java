@@ -25,4 +25,6 @@ public interface IActuatorDataListener
 	 */
 	public boolean onActuatorDataUpdate(ActuatorData data);
 
+    public void handleActuatorCommand(ActuatorData data);
+
 }

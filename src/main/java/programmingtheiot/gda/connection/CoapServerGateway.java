@@ -70,14 +70,16 @@ public class CoapServerGateway
 			this.dataMsgListener = listener;
 		}
 	}
-
+	
 	public boolean startServer()
 	{
 		try {
 			if (this.coapServer != null) {
+				_Logger.info("Iniciando servidor CoAP...");
 				this.coapServer.start();
 
 				for (Endpoint ep : this.coapServer.getEndpoints()) {
+					_Logger.info("Servidor escuchando en: " + ep.getAddress());
 					ep.addInterceptor(new MessageTracer());
 				}
 
@@ -92,6 +94,7 @@ public class CoapServerGateway
 
 		return false;
 	}
+
 
 	public boolean stopServer()
 	{
