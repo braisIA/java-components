@@ -134,9 +134,10 @@ public class SystemPerformanceManager implements IDataMessageListener
     }
 
     @Override
-    public boolean handleIncomingMessage(ResourceNameEnum resourceName, String msg)
+    public boolean handleIncomingMessage(String msg)
     {
-        _Logger.info("Received CoAP message for resource [" + resourceName + "]: " + msg);
+        _Logger.info("Received CoAP message: " + msg);
+
         // Procesamiento real aquí
         return true;
     }

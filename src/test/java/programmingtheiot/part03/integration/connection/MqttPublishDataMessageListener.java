@@ -108,7 +108,7 @@ public class MqttPublishDataMessageListener implements IDataMessageListener
 	 * @return boolean Will always return true.
 	 */
 	@Override
-	public boolean handleIncomingMessage(ResourceNameEnum resourceName, String msg)
+	public abstract boolean handleIncomingMessage(String msg)
 	{
 		_Logger.log(Level.INFO, "Topic: {0}, Message: {1}", new Object[] {resourceName.getResourceName(), msg});
 		

@@ -79,7 +79,7 @@ public class GenericCoapResponseHandler implements CoapHandler
 			// Example usage - notify listener if applicable
 			if (this.dataMsgListener != null) {
 				// TODO: Optionally parse payload and send appropriate object instead of raw string
-				this.dataMsgListener.handleIncomingMessage(null, response.getResponseText());
+				this.dataMsgListener.handleIncomingMessage(response.getResponseText());
 			}
 		} else {
 			_Logger.warning("No CoAP response to process. Response is null.");
