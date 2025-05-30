@@ -130,7 +130,7 @@ public class CoapClientConnector implements IRequestResponseClient
 
 				if (this.dataMsgListener != null) {
 					// Suponiendo que dataMsgListener tiene un método para manejar la respuesta GET
-					this.dataMsgListener.handleDataMessage(response.getResponseText());
+					this.dataMsgListener.handleIncomingMessage(response.getResponseText());
 				}
 
 				return true;

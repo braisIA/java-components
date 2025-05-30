@@ -47,7 +47,7 @@ public interface IDataMessageListener
 	 * from a connection using either MQTT or CoAP.
 	 * @return True on success; false otherwise.
 	 */
-	public boolean handleIncomingMessage(ResourceNameEnum resourceName, String msg);
+	public boolean handleIncomingMessage(String msg);
 	
 	/**
 	 * Callback signature for data message passing using the given parameters.

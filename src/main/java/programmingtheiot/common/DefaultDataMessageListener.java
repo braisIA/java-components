@@ -82,9 +82,9 @@ public class DefaultDataMessageListener implements IDataMessageListener
 	 * from a connection using either MQTT or CoAP.
 	 */
 	@Override
-	public boolean handleIncomingMessage(ResourceNameEnum resourceName, String msg)
+	public boolean handleIncomingMessage(String msg)
 	{
-		_Logger.log(Level.INFO, "Topic: {0}, Message: {1}", new Object[] {resourceName.getResourceName(), msg});
+		_Logger.log(Level.INFO, "Topic: {0}, Message: {1}", new Object[] {msg});
 		
 		return true;
 	}
@@ -131,9 +131,6 @@ public class DefaultDataMessageListener implements IDataMessageListener
 	}
 
 
-	public void handleDataMessage(String responseText) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'handleDataMessage'");
-	}
+	
 	
 }
