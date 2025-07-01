@@ -82,7 +82,8 @@ public class DeviceDataManager implements IDataMessageListener
 	}
 
 	@Override
-	public boolean handleSensorMessage(ResourceNameEnum resourceName, SensorData data) {
+	public boolean handleSensorMessage(ResourceNameEnum resourceName, SensorData data)
+	{
 		if (data != null) {
 			_Logger.info("Procesando datos de sensor: " + data.getName());
 
@@ -96,7 +97,8 @@ public class DeviceDataManager implements IDataMessageListener
 	}
 
 	@Override
-	public boolean handleSystemPerformanceMessage(ResourceNameEnum resourceName, SystemPerformanceData data) {
+	public boolean handleSystemPerformanceMessage(ResourceNameEnum resourceName, SystemPerformanceData data)
+	{
 		if (data != null) {
 			_Logger.info("Procesando datos de rendimiento del sistema: " + data.getName());
 
@@ -227,4 +229,5 @@ public class DeviceDataManager implements IDataMessageListener
 			}
 		}
 	}
+
 }
