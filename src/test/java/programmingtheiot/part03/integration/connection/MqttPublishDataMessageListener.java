@@ -108,16 +108,17 @@ public class MqttPublishDataMessageListener implements IDataMessageListener
 	 * @return boolean Will always return true.
 	 */
 	@Override
-	public abstract boolean handleIncomingMessage(String msg)
+	public boolean handleIncomingMessage(String msg)
 	{
-		_Logger.log(Level.INFO, "Topic: {0}, Message: {1}", new Object[] {resourceName.getResourceName(), msg});
-		
+		_Logger.log(Level.INFO, "Topic: {0}, Message: {1}", new Object[] {this.pubResource.getResourceName(), msg});
+
 		if (this.pubOnMsg) {
 			this.mqttClient.publishMessage(this.pubResource, msg, DEFAULT_QOS);
 		}
-		
+
 		return true;
 	}
+
 
 	/**
 	 * Processes and publishes a sensor data message.
@@ -173,9 +174,6 @@ public class MqttPublishDataMessageListener implements IDataMessageListener
 	}
 
 
-	public void handleDataMessage(String responseText) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'handleDataMessage'");
-	}
+
 	
 }

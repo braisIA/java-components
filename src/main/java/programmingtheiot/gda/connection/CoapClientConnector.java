@@ -23,6 +23,8 @@ import programmingtheiot.common.ConfigUtil;
 import programmingtheiot.common.IDataMessageListener;
 import programmingtheiot.common.ResourceNameEnum;
 
+// ... cabecera y package sin cambios ...
+
 public class CoapClientConnector implements IRequestResponseClient
 {
 	private static final Logger _Logger = Logger.getLogger(CoapClientConnector.class.getName());
@@ -129,7 +131,7 @@ public class CoapClientConnector implements IRequestResponseClient
 					" - " + response.getCode() + " - " + response.getResponseText());
 
 				if (this.dataMsgListener != null) {
-					// Suponiendo que dataMsgListener tiene un método para manejar la respuesta GET
+					// ✅ CAMBIO AQUÍ: Uso correcto del método handleIncomingMessage
 					this.dataMsgListener.handleIncomingMessage(response.getResponseText());
 				}
 
@@ -143,7 +145,6 @@ public class CoapClientConnector implements IRequestResponseClient
 
 		return false;
 	}
-
 
 	@Override
 	public boolean sendPostRequest(ResourceNameEnum resource, String name, boolean enableCON, String payload, int timeout) {
@@ -189,7 +190,7 @@ public class CoapClientConnector implements IRequestResponseClient
 	public boolean setDataMessageListener(IDataMessageListener listener)
 	{
 		this.dataMsgListener = listener;
-		return false;
+		return true; // ← Podrías devolver true aquí para indicar éxito
 	}
 
 	public void clearEndpointPath() {}

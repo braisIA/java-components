@@ -1,3 +1,4 @@
+
 /**
  * 
  * This class is part of the Programming the Internet of Things
@@ -9,19 +10,19 @@
 
 package programmingtheiot.part03.integration.connection;
 
-import static org.junit.Assert.*;
-
 import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import programmingtheiot.common.DefaultDataMessageListener;
 import programmingtheiot.common.IDataMessageListener;
-import programmingtheiot.gda.connection.*;
+import programmingtheiot.gda.connection.CoapClientConnector;
+import programmingtheiot.gda.connection.CoapServerGateway;
 
 /**
  * This test case class contains very basic integration tests for
